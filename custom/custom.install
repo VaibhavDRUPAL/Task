@@ -1,0 +1,45 @@
+<?php
+use Drupal\Core\Database\Database;
+ 
+/**
+ * Implements hook_schema().
+ */
+function custom_schema(){
+    $schema['custom_url_data'] = array(
+        'description' => 'The table for storing the url data.',
+        'fields' => array(
+            'id' => array(
+                'description' => 'Id',
+                'type' => 'serial',
+                'not null' => TRUE,
+                'unsigned' => TRUE,
+            ),
+            'source' => array(
+                'description' => 'Source url',
+                'type' => 'varchar',
+                'length' => 255,
+                'not null' => TRUE,
+                'default' => '',
+            ),
+          
+            'short_url' => array(
+                'description' => 'Short URL',
+                'type' => 'varchar',
+                'length' => 255,
+                'not null' => TRUE,
+                'default' => '',
+               
+            ),
+            'visit_url' => array(
+                'description' => 'Number of visitors',
+                'type' => 'int',
+                'length' => 100,
+                'not null' => TRUE,
+               
+            ),
+            
+        ),
+        'primary key' => array('id'),
+    );
+    return $schema;
+}
