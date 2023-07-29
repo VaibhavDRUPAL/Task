@@ -1,0 +1,22 @@
+custom.add_url:
+  path: '/add-short-url'
+  defaults:
+    _title: 'Add URL'
+    _form: '\Drupal\custom\Form\AddUrlForm'
+  requirements:
+    _access: 'TRUE'
+
+custom.url_list:
+  path: '/short-url-list'
+  defaults:
+    _controller: '\Drupal\custom\Controller\CustomController::list_url'
+  requirements:
+    _permission: 'access content'
+
+custom.page_detail:
+  path: '/view-details/{arg}'
+  defaults:
+    _controller: '\Drupal\custom\Controller\CustomController::detail_page'
+    arg: '9'
+  requirements:
+    _permission: 'access content'
