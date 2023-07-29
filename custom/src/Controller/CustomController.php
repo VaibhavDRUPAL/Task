@@ -20,19 +20,21 @@ class CustomController extends ControllerBase {
     $baseUrl = Url::fromRoute('<front>', array(), array('absolute' => TRUE))->toString();
 		$output ='';
     $query = \Drupal::database()->select('custom_url_data', 't');
-    $query->fields('t', ['id','source','short_url']);
+    $query->fields('t', ['id','source','short_url','visit_url']);
     $query->distinct();
     $result = $query->execute()->fetchAll();
 		$output.='<table>
                 <tr><th>ID</th>
                     <th>Source</th>
                     <th>Short Url</th>
+                    <th>Number of Visit on url</th>
                 </tr>';
     foreach ($result as $row) {
         $output.='<tr>
                     <td>'.$row->id.'</td>
                     <td>'.$row->source.'</td>
                     <td><a href="'.$baseUrl.'view-details/'.$row->short_url.'">'.$row->short_url.'</a></td>
+                    <td>'.$row->visit_url.'</td>
                   </tr>';
         
     }
@@ -51,8 +53,9 @@ class CustomController extends ControllerBase {
 
   public function detail_page($arg) {
     $output ='';
-
-
+    $query = \Drupal::database()->select('custom_url_data', 't')->condition('short_url', $arg)->fields('t', ['visit_url'])->execute()->fetchAll();
+    \Drupal::database()->update('custom_url_data')->fields(array('visit_url' => $query[0]->visit_url+1,))->condition('short_url', $arg)->execute();
+    
     $query = \Drupal::database()->select('custom_url_data', 't')->condition('short_url', $arg);
     $query->fields('t', ['id','source','short_url','visit_url']);
     $query->distinct();
@@ -64,6 +67,7 @@ class CustomController extends ControllerBase {
                     <th>Visitor count</th>
                 </tr>';
     foreach ($result as $row) {
+
         $output.='<tr>
                     <td>'.$row->id.'</td>
                     <td>'.$row->source.'</td>
@@ -73,7 +77,6 @@ class CustomController extends ControllerBase {
         
     }
     $output.='</table>';
-    \Drupal::database()->update('custom_url_data')->fields(array('visit_url' => $result[0]->visit_url+1,))->condition('short_url', $arg)->execute();
 
 
     $element = array(

@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Contains \Drupal\custom\Form\RatingCustomForm
+ * Contains \Drupal\custom\Form\AddUrlForm
  */
 namespace Drupal\custom\Form;
 
